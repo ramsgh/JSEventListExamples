@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>04 - Event Bubbling, Capturing & stopPropagation</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .box-outer { background: #fee2e2; border: 2px red solid; padding: 30px; border-radius: 10px; }
+    .box-inner { background: #fef3c7; border: 2px orange solid; padding: 25px; border-radius: 8px; }
+    .box-button { background: #dcfce7; border: 2px green solid; padding: 15px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .controls { margin-bottom: 15px; }
+    .log { background: #1e293b; color: #f1f5f9; padding: 12px; border-radius: 6px; font-family: monospace; height: 140px; overflow-y: auto; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2>04: Event Bubbling, Capturing & stopPropagation()</h2>
+
+  <div class="controls">
+    <label><input type="checkbox" id="stopPropCheck"> Enable <code>e.stopPropagation()</code> on Button</label>
+  </div>
+
+  <div class="box-outer" id="outer">
+    OUTER DIV (Red)
+    <div class="box-inner" id="inner">
+      INNER DIV (Orange)
+      <button class="box-button" id="btn">CLICK BUTTON (Green)</button>
+    </div>
+  </div>
+
+  <div class="log" id="log">Click the button to observe event propagation:</div>
+
+  <script>
+    const outer = document.getElementById('outer');
+    const inner = document.getElementById('inner');
+    const btn = document.getElementById('btn');
+    const logEl = document.getElementById('log');
+    const stopPropCheck = document.getElementById('stopPropCheck');
+
+    function printLog(msg) {
+      logEl.innerHTML += `<br>${msg}`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // EVENT BUBBLING (Default behavior: travels FROM target UPWARDS to window)
+    btn.addEventListener('click', (e) => {
+      printLog('1. 🟩 BUTTON Clicked (Target)');
+      if (stopPropCheck.checked) {
+        e.stopPropagation(); // STOPS the event from traveling up to inner and outer!
+        printLog('⛔ stopPropagation() called! Bubbling stopped.');
+      }
+    });
+
+    inner.addEventListener('click', () => {
+      printLog('2. 🟧 INNER DIV Clicked (Bubbled)');
+    });
+
+    outer.addEventListener('click', () => {
+      printLog('3. 🟥 OUTER DIV Clicked (Bubbled)');
+    });
+
+    /* 
+      NOTE ON CAPTURING:
+      If you pass { capture: true } as the 3rd parameter to addEventListener,
+      the event triggers during the CAPTURING phase (DOWNWARDS from window -> target)
+      instead of the BUBBLING phase.
+    */
+  </script>
+</body>
+</html>

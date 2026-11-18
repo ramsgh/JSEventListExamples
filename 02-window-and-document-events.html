@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>02 - Window & Page Load Events</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; height: 1500px; }
+    .status-card { position: fixed; top: 10px; right: 10px; background: #0f172a; color: #f8fafc; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h2>02: Window Events (scroll, resize, load)</h2>
+  <p>Scroll down or resize your browser window to see live updates in the top right box.</p>
+
+  <div class="status-card">
+    <div><strong>Window Size:</strong> <span id="sizeVal">-</span></div>
+    <div><strong>Scroll Position:</strong> <span id="scrollVal">0px</span></div>
+    <div><strong>Page Status:</strong> <span id="loadVal">Loading...</span></div>
+  </div>
+
+  <script>
+    // 1. load (Triggers when ALL assets including images & stylesheets are fully loaded)
+    window.addEventListener('load', () => {
+      document.getElementById('loadVal').textContent = 'FULLY LOADED ✅';
+      document.getElementById('loadVal').style.color = '#4ade80';
+    });
+
+    // 2. resize (Triggers when the window viewport dimensions change)
+    function updateWindowSize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      document.getElementById('sizeVal').textContent = `${width}px × ${height}px`;
+    }
+    window.addEventListener('resize', updateWindowSize);
+    updateWindowSize(); // initial call
+
+    // 3. scroll (Triggers when the user scrolls the webpage)
+    window.addEventListener('scroll', () => {
+      const scrollY = Math.round(window.scrollY);
+      document.getElementById('scrollVal').textContent = `${scrollY}px`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>01 - Event Listeners & Common Event Types</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+    .box { width: 150px; height: 80px; background: #e2e8f0; border: 2px solid #94a3b8; display: flex; align-items: center; justify-content: center; margin-top: 10px; border-radius: 8px; transition: all 0.2s; }
+    .box.active { background: #3b82f6; color: white; border-color: #1d4ed8; }
+    .field { margin-bottom: 12px; }
+    input { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; }
+    input:focus { border-color: #3b82f6; outline: none; }
+    .log-box { background: #1e293b; color: #38bdf8; padding: 10px; border-radius: 6px; font-family: monospace; height: 120px; overflow-y: auto; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2>01: Common DOM Event Types</h2>
+
+  <!-- 1. Click Event -->
+  <div class="field">
+    <button id="btnClick">Click Me!</button>
+  </div>
+
+  <!-- 2. Input & Change Events -->
+  <div class="field">
+    <label>Input Event (live): </label>
+    <input type="text" id="textInput" placeholder="Type here...">
+    <span id="inputOutput"></span>
+  </div>
+
+  <div class="field">
+    <label>Change Event (on blur/select): </label>
+    <select id="selectField">
+      <option value="">-- Choose Option --</option>
+      <option value="JS">JavaScript</option>
+      <option value="Node">Node.js</option>
+    </select>
+    <span id="selectOutput"></span>
+  </div>
+
+  <!-- 3. Keydown & Keyup -->
+  <div class="field">
+    <label>Keyboard Events: </label>
+    <input type="text" id="keyInput" placeholder="Press keys...">
+  </div>
+
+  <!-- 4. Mouseover & Mouseout -->
+  <div id="hoverBox" class="box">Hover Over Me</div>
+
+  <!-- 5. Focus & Blur -->
+  <div class="field" style="margin-top: 15px;">
+    <label>Focus/Blur Input: </label>
+    <input type="text" id="focusInput" placeholder="Click in and out...">
+  </div>
+
+  <div class="log-box" id="eventLog">Event Log:</div>
+
+  <script>
+    const logEl = document.getElementById('eventLog');
+    function log(msg) {
+      logEl.innerHTML += `<br>> ${msg}`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // 1. click
+    document.getElementById('btnClick').addEventListener('click', (e) => {
+      log('CLICK: Button was clicked!');
+    });
+
+    // 2. input (triggers on EVERY keystroke)
+    const textInput = document.getElementById('textInput');
+    textInput.addEventListener('input', (e) => {
+      document.getElementById('inputOutput').textContent = e.target.value;
+    });
+
+    // 3. change (triggers when value changes and focus leaves)
+    document.getElementById('selectField').addEventListener('change', (e) => {
+      document.getElementById('selectOutput').textContent = `Selected: ${e.target.value}`;
+    });
+
+    // 4. keydown & keyup
+    const keyInput = document.getElementById('keyInput');
+    keyInput.addEventListener('keydown', (e) => {
+      log(`KEYDOWN: Key = "${e.key}" (Code: ${e.code})`);
+    });
+    keyInput.addEventListener('keyup', (e) => {
+      log(`KEYUP: Released "${e.key}"`);
+    });
+
+    // 5. mouseover & mouseout
+    const hoverBox = document.getElementById('hoverBox');
+    hoverBox.addEventListener('mouseover', () => {
+      hoverBox.classList.add('active');
+      hoverBox.textContent = 'Mouse Inside!';
+    });
+    hoverBox.addEventListener('mouseout', () => {
+      hoverBox.classList.remove('active');
+      hoverBox.textContent = 'Hover Over Me';
+    });
+
+    // 6. focus & blur
+    const focusInput = document.getElementById('focusInput');
+    focusInput.addEventListener('focus', () => {
+      log('FOCUS: Input gained focus');
+    });
+    focusInput.addEventListener('blur', () => {
+      log('BLUR: Input lost focus');
+    });
+  </script>
+</body>
+</html>
